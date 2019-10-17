@@ -42,6 +42,12 @@ set runtimepath+=~/.config/nvim/plugged/deoplete-clang/
 " <TAB>: completion.
 inoremap <expr><TAB>  pumvisible() ? "\<C-n>" : "\<TAB>"
 
+
+" Cpp highlight
+let g:cpp_member_variable_highlight = 1
+let g:cpp_class_decl_highlight = 1
+
+
 " vim-go
 let g:go_def_mapping_enabled = 0
 let g:go_fmt_command = 'goimports'
@@ -51,10 +57,13 @@ let g:go_highlight_build_constraints = 1
 let g:go_highlight_extra_types = 1
 let g:go_highlight_fields = 1
 let g:go_highlight_functions = 1
+let g:go_highlight_function_calls= 1
 let g:go_highlight_methods = 1
 let g:go_highlight_operators = 1
 let g:go_highlight_structs = 1
 let g:go_highlight_types = 1
+let g:go_auto_sameids = 1
+let g:go_auto_type_info = 1
 
 " use real tabs in .go files, not spaces
 autocmd FileType go setlocal shiftwidth=4 tabstop=4 softtabstop=4 noexpandtab
@@ -66,14 +75,18 @@ call plug#begin()
 Plug 'tpope/vim-fugitive'
 Plug 'sebdah/vim-delve'
 Plug 'scrooloose/nerdtree', { 'on':  'NERDTreeToggle' }
-Plug 'jistr/vim-nerdtree-tabs'
-Plug 'fatih/vim-go', { 'do': ':GoInstallBinaries' }
+"Plug 'jistr/vim-nerdtree-tabs'
+Plug 'fatih/vim-go', { 'do': ':GoInstallBinaries' } " Golang suppor in nvim (goimpoits, gofmt and etc)
 " DEOPLETE
-Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
-Plug 'zchee/deoplete-go', { 'do': 'make' }
+Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' } " Root autocompletion Plugin
+Plug 'zchee/deoplete-go', { 'do': 'make' }     " Golang autocompletion
 Plug 'zchee/deoplete-jedi'                     " Go auto completion
-Plug 'zchee/deoplete-clang'
-Plug 'Shougo/neoinclude.vim'
+Plug 'zchee/deoplete-clang'                    " C and C++ autocompletion
+Plug 'Shougo/neoinclude.vim'                   " For C and C++ include autocompletion
+Plug 'octol/vim-cpp-enhanced-highlight'
+"Plug 'bfrg/vim-cpp-modern'
+
+Plug 'sbdchd/neoformat'
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plug 'junegunn/fzf.vim'
 Plug 'vim-airline/vim-airline'
@@ -90,7 +103,10 @@ Plug 'vim-airline/vim-airline-themes'
 Plug 'terryma/vim-multiple-cursors'
 Plug 'skielbasa/vim-material-monokai'
 Plug 'patstockwell/vim-monokai-tasty'
+
+
 Plug 'w0rp/ale'
+Plug 'junegunn/goyo.vim'
 
 
 " Add plugins to &runtimepath
@@ -137,8 +153,8 @@ nnoremap <C-Right> :tabnext <Enter>
 nnoremap <A-Left> :bn <Enter>
 nnoremap <A-Right> :bp <Enter>
 " deoplete
-"imap <expr> <Down>   pumvisible() ? "\<c-n>"  "\<tab>"
-"imap <expr> <Up> pumvisible() ? "\<c-p>" : "\tab>"
+imap <expr> <Down>   pumvisible() ? "\<c-n>" : "\<tab>"
+imap <expr> <Up> pumvisible() ? "\<c-p>" : "\<tab>"
 imap <expr> <tab>    pumvisible() ? deoplete#close_popup() : "\<cr>"
 " vim-go mappings
 autocmd FileType go nmap <buffer> <leader>r <plug>(go-run)
@@ -153,13 +169,13 @@ autocmd FileType go nmap <buffer> <leader>i <plug>(go-info)
 "_______________________________________
 "
 if (has("termguicolors"))
-    set termguicolors
+     set termguicolors
 endif
 " For Neovim 0.1.3 and 0.1.4
 let $NVIM_TUI_ENABLE_TRUE_COLOR=0
 " Theme
 syntax enable
-colorscheme vim-monokai-tasty
+colorscheme monokai_pro
 
 
 "DEOPLETE
